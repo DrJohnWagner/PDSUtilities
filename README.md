@@ -19,6 +19,12 @@ See below for sample usage of both of these functions.
 ## Functions
 
 ### Function: plot_importance()
+
+<img
+src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_importance.png?raw=true"
+alt="plot_importance" style="width:500px;"
+/>
+
 The `plot_importane()` function is a plotly-based replacement
 for `xgboost.plot_importance()`. The APIs are similar (though
 several parameters have been renamed) but with two key differences.
@@ -113,6 +119,12 @@ fig.show()
 ```
 
 ### Function: plot_tree()
+
+<img
+src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_tree_colour.png?raw=true"
+alt="plot_tree_colour" style="width:600px;"
+/>
+
 The `plot_tree()` function is a plotly-based replacement for `xgboost.plot_tree()`
 that takes visualising booster trees to a whole new visual level. As a result,
 the API looks nothing like that of `xgboost.plot_tree()`, though in its
@@ -135,6 +147,11 @@ Note that the default colours were chosen from a vibrant, colourblind-friendly
 palette, but can be completely configured via a number of additional configuration
 settings. An additional, handy parameter is `grayscale = True`, which produces
 a also colorblind-friendly, grayscale visualisation.
+
+<img
+src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_tree_grayscale.png?raw=true"
+alt="plot_tree_grayscale" style="width:700px;"
+/>
 
 Finally, the `Figure` object returned by `plot_impotance()` can be further customised
 via plotly's extensive API.
