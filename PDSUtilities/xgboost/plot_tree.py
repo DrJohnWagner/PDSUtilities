@@ -176,7 +176,7 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     }
     DEFAULT_NODE_SHAPE = {
         'type': "rect",
-        'fillcolor': "#CBCBCB" if grayscale else "rgba(0,153,136,0.8)", #"#009988", #"#C2CA95",
+        'fillcolor': "#CBCBCB" if grayscale else "rgba(0,153,136,0.75)", #"#009988", #"#C2CA95",
         'opacity': 1.0,
     }
     DEFAULT_NODE_LINE = {
@@ -186,7 +186,7 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     }
     DEFAULT_LEAF_SHAPE = {
         'type': "rounded",
-        'fillcolor': "#EDEDED" if grayscale else "rgba(238,119,51,0.8)", #"#EE7733", #"#E8D8C0", #"#B5B97A",
+        'fillcolor': "#EDEDED" if grayscale else "rgba(238,119,51,0.75)", #"#EE7733", #"#E8D8C0", #"#B5B97A",
         'opacity': 1.0,
     }
     DEFAULT_LEAF_LINE = {
@@ -203,11 +203,11 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     }
     # COLORMAP = ["#005ab5", "#DC3220"]
     DEFAULT_EDGE_COLORS = {
-        'Yes': "#222222" if grayscale else "#005AB5",
-        'No': "#777777" if grayscale else "#CC3311", #"#DC3220",
+        'Yes': "#222222" if grayscale else "rgb(0,153,136)",
+        'No': "#888888" if grayscale else "rgb(238,119,51)",
         'Missing': "#AAAAAA",
-        'Yes/Missing':  "#222222" if grayscale else "#0077BB", #"#005AB5",
-        'No/Missing': "#777777" if grayscale else "#DC3220",
+        'Yes/Missing':  "#222222" if grayscale else "rgb(0,153,136)",
+        'No/Missing': "#888888" if grayscale else "rgb(238,119,51)",
     }
     DEFAULT_EDGE_ARROW = {
         'arrowhead': 3, # Integer between or equal to 0 and 8

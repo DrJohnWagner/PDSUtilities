@@ -22,7 +22,7 @@ See below for sample usage of both of these functions.
 
 <img
 src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_importance.png?raw=true"
-alt="plot_importance" style="width:500px;"
+alt="plot_importance" style="width:600px;"
 />
 
 The `plot_importane()` function is a plotly-based replacement
@@ -122,7 +122,7 @@ fig.show()
 
 <img
 src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_tree_colour.png?raw=true"
-alt="plot_tree_colour" style="width:600px;"
+alt="plot_tree_colour" style="width:700px;"
 />
 
 The `plot_tree()` function is a plotly-based replacement for `xgboost.plot_tree()`

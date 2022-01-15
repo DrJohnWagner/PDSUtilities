@@ -73,7 +73,7 @@ def plot_importance(booster, features = {}, width = 0.6, xrange = None, yrange =
 
     if isinstance(features, list):
         features = {
-            f"F{f}": features[f] for f in range(len(features))
+            f"f{f}": features[f] for f in range(len(features))
         }
 
     tuples = [(k, importance[k]) for k in importance]
