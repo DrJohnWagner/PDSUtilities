@@ -1,7 +1,15 @@
+# Copyright 2022 by Contributors
+
 from xgboost import XGBModel
 from xgboost import Booster
 import plotly.graph_objects as go
 
+# The `PDSUtilities.xgboost.plot_importance()` function is a direct
+# copy/paste/edit modification of `xgboost.plot_importance()` with a few
+# minor tweaks to the API and relatively light changes to the code. The
+# xgboost team deserves the vast majority of credit for this code!
+# The xgboost license can be found here:
+# https://github.com/dmlc/xgboost/blob/master/LICENSE
 def plot_importance(booster, features = {}, width = 0.6, xrange = None, yrange = None,
                     title = 'Feature Importance', xlabel = 'F Score',
                     ylabel = 'Features', fmap = '', max_features = None,

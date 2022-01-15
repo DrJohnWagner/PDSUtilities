@@ -1,3 +1,5 @@
+# Copyright 2022 by Contributors
+
 import numpy as np
 from igraph import Graph
 import plotly.graph_objects as go
