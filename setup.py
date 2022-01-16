@@ -15,12 +15,14 @@ setup(name="PDSUtilities",
 	packages=[
 		"PDSUtilities",
 		"PDSUtilities.xgboost",
+		"PDSUtilities.pandas",
 	],
 	install_requires=[
-		"numpy",
-		"xgboost",
-		"plotly",
 		"igraph",
+		"numpy",
+		"pandas",
+		"plotly",
+		"xgboost",
 	],
 	tests_require=[
 		"pytest",

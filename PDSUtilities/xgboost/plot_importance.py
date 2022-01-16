@@ -110,4 +110,7 @@ def plot_importance(booster, features = {}, width = 0.6, xrange = None, yrange =
         fig.update_yaxes(title_text = ylabel)
     fig.update_xaxes(showgrid = show_grid)
     fig.update_yaxes(showgrid = False)
+    # This is literally the dumbest thing I've seen in years...
+    # This puts space between the ticks and tick labels. SMFH.
+    fig.update_yaxes(ticksuffix = "  ")
     return fig
