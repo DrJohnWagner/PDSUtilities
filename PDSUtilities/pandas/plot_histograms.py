@@ -139,6 +139,3 @@ def plot_histograms(df, target, rows = None, cols = None, width = None, height =
     # This puts space between the ticks and tick labels. SMFH.
     fig.update_yaxes(ticksuffix = " ")
     return fig
-
-fig = plot_histograms(df, target = "HeartDisease", title = "Heart Disease Dataset Histograms", template = "presentation") #, cumulative = True)
-fig.show()
