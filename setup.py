@@ -19,6 +19,7 @@ setup(name="PDSUtilities",
 		"PDSUtilities",
 		"PDSUtilities.xgboost",
 		"PDSUtilities.pandas",
+		"PDSUtilities.plotly",
 	],
 	install_requires=[
 		"igraph",

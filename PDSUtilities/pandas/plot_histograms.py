@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.io as pio
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from PDSUtilities.plotly import ColorblindSafeColormaps
 
 def get_categories_and_counts(df, column, target, value):
     categories = df[column].unique()
@@ -79,14 +80,6 @@ def get_rcwh(rows, cols, width, height, columns, values):
 def plot_histograms(df, target = None, rows = None, cols = None, width = None, height = None,
     title = None, cumulative = None, barmode = "stack", opacity = 0.65, hovermode = None, template = None,
     colors = 0, font = {}, title_font = {}, legend_font = {}):
-    DEFAULT_COLORS = [
-        ["#0077BB", "#CC3311", "#33BBEE", "#EE7733", "#009988", "#EE3377", "#BBBBBB"],
-        ["#4477AA", "#AA3377", "#66CCEE", "#EE6677", "#CCBB44", "#228833", "#BBBBBB"],
-        ["#332288", "#882255", "#88CCEE", "#CC6677", "#44AA99", "#AA4499", "#117733",
-         "#DDCC77", "#999933", "#DDDDDD"],
-        ["#004488", "#994455", "#997700", "#6699CC", "#EE99AA", "#EECC66"],
-        ["#444444", "#999999", "#666666", "#DDDDDD"],
-    ]
     DEFAULT_FONT = {
         'family': "Verdana, Helvetica, Verdana, Calibri, Garamond, Cambria, Arial",
         'size': 14,
@@ -98,6 +91,8 @@ def plot_histograms(df, target = None, rows = None, cols = None, width = None, h
         apply_default({ 'size': font.get('size', 16) + 4 }, font)
     )
     colors = 0 if colors is None else colors
+    colormaps = ColorblindSafeColormaps()
+    colors = colormaps.get_colors(colors)
     if isinstance(colors, int):
         colors = min(max(0, colors), len(DEFAULT_COLORS) - 1)
         colors = DEFAULT_COLORS[colors]

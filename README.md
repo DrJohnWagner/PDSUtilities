@@ -352,10 +352,14 @@ to be displayed in a single hover textbox.
 The `template` argument can be used to specify a plotly template. See https://plotly.com/python/templates/
 and the plotly documentation.
 
-The `colors` argument can be an `int` in `range(0, 5)` spcifying one of five colour schemes to be used in
-setting the bar colours, or can be an array of colour strings to be used instead of the colour schemes.
-Note that all of the colour schemes are colour blindness friendly and have significant contrast. This is
-also true of the grayscale colour scheme, which can be selected with `colors = 4`.
+The `colors` argument can be an `int` in `range(-1, 5)` or a string from the list
+`["Vibrant", "Bright", "Muted", "Medium-Contrast", "Grayscale"]`specifying one of
+five colourblindness-friendly schemes to be used in setting the bar colours; or it
+can be a list of colour strings of the form `"#RRGGBB"`, `"rgb(255,255,255)"` or
+`"rgba(255,255,255,1.0)"` to be used instead of the colour schemes.
+Note that all of the colour schemes are colour blindness friendly and have significant
+contrast. This is also true of the grayscale colour scheme, which can be selected with
+either `colors = 4` or `colors = -1`.
 
 The `font`, `title_font` and `legend_font` set the fonts used for the text elements in the plots and
 take values similar to other `PDSUtilities` functions. For example, the default font is:
