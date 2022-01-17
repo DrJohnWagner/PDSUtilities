@@ -292,3 +292,12 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     edge_line = {}, edge_label = {}, edge_font = {}):
 
 ```
+
+## Attributions
+This repository uses the Heart Failure Prediction Dataset[1] from UCI Machine Learning Repository
+(`data/heart.csv`)
+on the following link: https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/
+
+## References
+1. fedesoriano. (September 2021). Heart Failure Prediction Dataset. Retrieved [January 16, 2022] from
+https://www.kaggle.com/fedesoriano/heart-failure-prediction.

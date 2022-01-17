@@ -233,18 +233,20 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     #
     node_shape = apply_default(node_shape, DEFAULT_NODE_SHAPE)
     node_line = apply_default(node_line, DEFAULT_NODE_LINE)
-    node_font = { **font, **node_font}
+    node_font = apply_default(node_font, font)
     #
     leaf_shape = apply_default(leaf_shape, DEFAULT_LEAF_SHAPE)
     leaf_line  = apply_default(leaf_line,  DEFAULT_LEAF_LINE)
-    leaf_font = { **font, **leaf_font }
+    leaf_font = apply_default(leaf_font, font)
     #
     edge_labels = apply_default(edge_labels, DEFAULT_EDGE_LABELS)
     edge_colors = apply_default(edge_colors, DEFAULT_EDGE_COLORS)
     edge_arrow  = apply_default(edge_arrow,  DEFAULT_EDGE_ARROW)
     edge_line = apply_default(edge_line, DEFAULT_EDGE_LINE)
     edge_label = apply_default(edge_label, DEFAULT_EDGE_LABEL)
-    edge_font   = { **font, **{ 'size': font.get('size', 16) - 2 }, **edge_font }
+    edge_font = apply_default(edge_font,
+        apply_default({ 'size': font.get('size', 16) - 2 }, font)
+    )
     #
     if isinstance(features, list):
         features = get_features(features)

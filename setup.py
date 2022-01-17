@@ -3,8 +3,11 @@ from setuptools import setup
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+with open('PDSUtilities/version.py') as f:
+    exec(f.read())
+
 setup(name="PDSUtilities",
-	version="0.1.3",
+	version=__version__,
 	description="Utilities for data science in python",
 	long_description=long_description,
 	long_description_content_type="text/markdown",
