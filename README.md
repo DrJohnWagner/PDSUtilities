@@ -13,6 +13,7 @@ Import the functions you need as follows:
 ```
 from PBSUtilities.xgboost import plot_importance
 from PBSUtilities.xgboost import plot_tree
+from PBSUtilities.pandas import plot_histograms
 ```
 See below for sample usage of both of these functions.
 
@@ -291,6 +292,19 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     edge_labels = {}, edge_colors = {}, edge_arrow = {},
     edge_line = {}, edge_label = {}, edge_font = {}):
 
+```
+
+### Function: plot_histograms()
+
+```
+import pandas as pd
+from PDSUtilities.pandas import plot_histograms
+
+df = pd.read_csv("./data/heart.csv")
+
+fig = plot_histograms(df, target = "ChestPainType", template = "presentation",
+	title = "Heart Disease Dataset Histograms Grouped by Chest Pain Type")
+fig.show()
 ```
 
 ## Attributions
