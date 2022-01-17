@@ -296,6 +296,11 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
 
 ### Function: plot_histograms()
 
+The `plot_histograms()` function uses plotly to produce publication-quality histograms
+for all categorical and numerical columns in a `pandas` dataframe with a single line of code.
+In its simplest usage, `plot_histograms()` takes a single argument--the dataframe--but with
+only a few more arguments, it quickly becomes a tool for not only visualising your data, but
+also for exploriing it. For example, this code,
 ```
 import pandas as pd
 from PDSUtilities.pandas import plot_histograms
@@ -305,6 +310,61 @@ df = pd.read_csv("./data/heart.csv")
 fig = plot_histograms(df, target = "ChestPainType", template = "presentation",
 	title = "Heart Disease Dataset Histograms Grouped by Chest Pain Type")
 fig.show()
+```
+produces histograms grouped by the values in the `target` column:
+<img
+src="https://github.com/DrJohnWagner/PDSUtilities/blob/2effc8d9e49e65bd5a83d2d0dc315e71a26c1a86/images/plot_histograms.png?raw=true"
+alt="plot_histograms" style="width:700px;"
+/>
+
+The `plot_histograms()` function has the following API:
+```
+def plot_histograms(df, target = None, rows = None, cols = None, width = None, height = None,
+    title = None, cumulative = None, barmode = "stack", opacity = 0.65, hovermode = None,
+	template = None, colors = 0, font = {}, title_font = {}, legend_font = {}):
+```
+
+If `target = None` then totals are plotted for every column in the dataframe. If instead, `target`
+is the name of a column, then totals for each value of the `target` are plotted for every column.
+
+If either or both of the number of `rows` and `cols` are specified, those are used in arranging the
+histograms in the grid. Otherwise values are chosen automatically in a reasonable manner. The same
+applies tohe `width` and `column`: either or both can be specified and missing values are calculated
+automatically based upon the specified or calculated `rows` and `cols`.
+
+The `title` can be supplied either as a string or a `dict` according to the plotly specification.
+The default `dict` that is created when `title` is a string is:
+```
+title = { 'text': title, 'x': 0.5, 'xanchor': "center" }
+```
+
+Specifying `cumulative = True` yields cumulative histograms for each `target` variable, or the entire
+dataset if `target = None`.
+
+The `barmode` argument can be any of `"stack"`, `"group"` or `"overlay"`, and `opacity` is used only
+when `barmode` is `"overlay"` to specify the opacity of the bars.
+
+The `hovermode` argument controls the hover text and markers displayed as the cursor hovers over values
+in plotly plots and can be any of `"x"`, `"y"`, `"x unified"` or `"y unified"`, with the same meaning
+as in plotly. The default is `"x unified"`which causes all values corresponding to the current x position
+to be displayed in a single hover textbox.
+
+The `template` argument can be used to specify a plotly template. See https://plotly.com/python/templates/
+and the plotly documentation.
+
+The `colors` argument can be an `int` in `range(0, 5)` spcifying one of five colour schemes to be used in
+setting the bar colours, or can be an array of colour strings to be used instead of the colour schemes.
+Note that all of the colour schemes are colour blindness friendly and have significant contrast. This is
+also true of the grayscale colour scheme, which can be selected with `colors = 4`.
+
+The `font`, `title_font` and `legend_font` set the fonts used for the text elements in the plots and
+take values similar to other `PDSUtilities` functions. For example, the default font is:
+```
+font = {
+	'family': "Verdana, Helvetica, Verdana, Calibri, Garamond, Cambria, Arial",
+	'size': 14,
+	'color': "#000000"
+}
 ```
 
 ## Attributions
