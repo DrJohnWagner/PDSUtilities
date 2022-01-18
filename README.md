@@ -21,10 +21,12 @@ See below for sample usage of both of these functions.
 
 ### Function: plot_importance()
 
-<img
-src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_importance.png?raw=true"
-alt="plot_importance" style="width:600px;"
-/>
+<div align="center">
+	<img
+	src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_importance.png?raw=true"
+	alt="plot_importance" style="width:500px;"
+	/>
+</div>
 
 The `plot_importane()` function is a plotly-based replacement
 for `xgboost.plot_importance()`. The APIs are similar (though
@@ -121,10 +123,12 @@ fig.show()
 
 ### Function: plot_tree()
 
-<img
-src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_tree_colour.png?raw=true"
-alt="plot_tree_colour" style="width:700px;"
-/>
+<div align="center">
+	<img
+	src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_tree_colour.png?raw=true"
+	alt="plot_tree_colour" style="width:700px;"
+	/>
+</div>
 
 The `plot_tree()` function is a plotly-based replacement for `xgboost.plot_tree()`
 that takes visualising booster trees to a whole new visual level. As a result,
@@ -149,13 +153,26 @@ palette, but can be completely configured via a number of additional configurati
 settings. An additional, handy parameter is `grayscale = True`, which produces
 a also colorblind-friendly, grayscale visualisation.
 
-<img
-src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_tree_grayscale.png?raw=true"
-alt="plot_tree_grayscale" style="width:700px;"
-/>
+<div align="center">
+	<img
+	src="https://github.com/DrJohnWagner/PDSUtilities/blob/5f98150552fbf9f985546906ecec1bebb5a91257/images/plot_tree_grayscale.png?raw=true"
+	alt="plot_tree_grayscale" style="width:700px;"
+	/>
+</div>
 
 Finally, the `Figure` object returned by `plot_impotance()` can be further customised
 via plotly's extensive API.
+
+The `plot_tree()` API is:
+```
+plot_tree(booster, tree, features = {}, width = None, height = None,
+    precision = 4, scale = 0.7, font = None, grayscale = False,
+    node_shape = {}, node_line = {}, node_font = {},
+    leaf_shape = {}, leaf_line = {}, leaf_font = {},
+    edge_labels = {}, edge_colors = {}, edge_arrow = {},
+    edge_line = {}, edge_label = {}, edge_font = {})
+
+```
 
 **Example**
 The overall font can be configured by any of the following settings:
@@ -283,17 +300,6 @@ but for now, adjusting `scale` is the preferred method for dealing with this.
 As with `plot_impotance()` the returned `Figure` object can be further customised
 via plotly's extensive API.
 
-The `plot_tree()` API is:
-```
-def plot_tree(booster, tree, features = {}, width = None, height = None,
-    precision = 4, scale = 0.7, font = None, grayscale = False,
-    node_shape = {}, node_line = {}, node_font = {},
-    leaf_shape = {}, leaf_line = {}, leaf_font = {},
-    edge_labels = {}, edge_colors = {}, edge_arrow = {},
-    edge_line = {}, edge_label = {}, edge_font = {}):
-
-```
-
 ### Function: plot_histograms()
 
 The `plot_histograms()` function uses plotly to produce publication-quality histograms
@@ -312,16 +318,18 @@ fig = plot_histograms(df, target = "ChestPainType", template = "presentation",
 fig.show()
 ```
 produces histograms grouped by the values in the `target` column:
-<img
-src="https://github.com/DrJohnWagner/PDSUtilities/blob/2effc8d9e49e65bd5a83d2d0dc315e71a26c1a86/images/plot_histograms.png?raw=true"
-alt="plot_histograms" style="width:700px;"
-/>
+<div align="center">
+	<img
+	src="https://github.com/DrJohnWagner/PDSUtilities/blob/2effc8d9e49e65bd5a83d2d0dc315e71a26c1a86/images/plot_histograms.png?raw=true"
+	alt="plot_histograms" style="width:700px;"
+	/>
+</div>
 
 The `plot_histograms()` function has the following API:
 ```
-def plot_histograms(df, target = None, rows = None, cols = None, width = None, height = None,
-    title = None, cumulative = None, barmode = "stack", opacity = 0.65, hovermode = None,
-	template = None, colors = 0, font = {}, title_font = {}, legend_font = {}):
+plot_histograms(df, target = None, rows = None, cols = None, width = None, height = None,
+    title = None, cumulative = None, barmode = "stack", opacity = 0.65, bins = 0,
+	hovermode = None, template = None, colors = 0, font = {}, title_font = {}, legend_font = {})
 ```
 
 If `target = None` then totals are plotted for every column in the dataframe. If instead, `target`
@@ -333,16 +341,22 @@ applies tohe `width` and `column`: either or both can be specified and missing v
 automatically based upon the specified or calculated `rows` and `cols`.
 
 The `title` can be supplied either as a string or a `dict` according to the plotly specification.
-The default `dict` that is created when `title` is a string is:
+As an example, the default `dict` that is created when `title` is a string is:
 ```
 title = { 'text': title, 'x': 0.5, 'xanchor': "center" }
 ```
 
-Specifying `cumulative = True` yields cumulative histograms for each `target` variable, or the entire
+Specifying `cumulative = True` produces cumulative histograms for each `target` variable, or the entire
 dataset if `target = None`.
 
 The `barmode` argument can be any of `"stack"`, `"group"` or `"overlay"`, and `opacity` is used only
 when `barmode` is `"overlay"` to specify the opacity of the bars.
+
+The `bins` argument can be either an `int` or a `dict` and suggests a maximum number of bins to use
+for numerical columns. When `bins` is an `int`, this argument applies to all columns in the dataframe.
+Note that the default value, `bins = 0`, specifies that plotly should choose the value automatically.
+When `bins` is a `dict` it specifies the maximum number of bins for those columns in the dictionary,
+where keys are column names and values are bins.
 
 The `hovermode` argument controls the hover text and markers displayed as the cursor hovers over values
 in plotly plots and can be any of `"x"`, `"y"`, `"x unified"` or `"y unified"`, with the same meaning

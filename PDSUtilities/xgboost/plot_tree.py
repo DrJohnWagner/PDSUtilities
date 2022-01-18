@@ -167,9 +167,37 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     leaf_shape = {}, leaf_line = {}, leaf_font = {},
     edge_labels = {}, edge_colors = {}, edge_arrow = {},
     edge_line = {}, edge_label = {}, edge_font = {}):
+    """
+    plot_tree produces a plot of an xgboost decision tree.
+
+    Args:
+        booster (Booster): the xgboost booster containing the tree to plot
+        tree (int): the index of the tree to plot
+        features (list[str], optional): list of labels to use in place of feature names. Defaults to {}.
+        width (int, optional): the width of the figure to be produced. Defaults to None.
+        height (int, optional): the height of the figure to be produced. Defaults to None.
+        precision (int, optional): the number of decimal places when plotting numbers. Defaults to 4.
+        scale (float, optional): a scaling factor for adjusting label widths. Defaults to 0.7.
+        font (dict, optional): the main font used in the plot. Defaults to the default font.
+        grayscale (bool, optional): specifies whether the plot should be grayscale. Defaults to False.
+        node_shape (dict, optional): spcifies the shape styles of nodes. Defaults to {}.
+        node_line (dict, optional): specifies the line styles of nodes. Defaults to {}.
+        node_font (dict, optional): specifies the font used in nodes. Defaults to the main font.
+        leaf_shape (dict, optional): specifies the shape styles of leaves. Defaults to {}.
+        leaf_line (dict, optional): specifies the line styles of leaves. Defaults to {}.
+        leaf_font (dict, optional): specifies the font used in leaves. Defaults to the main font.
+        edge_labels (dict, optional): specifies the labels used in edges. Defaults to {}.
+        edge_colors (dict, optional): specifies the colors used in edges. Defaults to {}.
+        edge_arrow (dict, optional): specifies the arrow styles used in edges. Defaults to {}.
+        edge_line (dict, optional): specifies the line styles used in edges. Defaults to {}.
+        edge_label (dict, optional): specifies the label styles used in edges. Defaults to {}.
+        edge_font (dict, optional): specifies the font used in edges. Defaults to the main font.
+
+    Returns:
+        plotly.graph_objects.Figure: the plotly Figure encapsulating the tree plot.
+    """
     #
     DEFAULT_FONT = {
-        # 'family': "Courier New, monospace",
         'family': "Verdana, Helvetica, Verdana, Calibri, Garamond, Cambria, Arial",
         'size': 16,
         'color': "#000000"
