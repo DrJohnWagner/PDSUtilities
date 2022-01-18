@@ -161,6 +161,7 @@ def get_leaves_scatter_plot(leaves, xy, precision, font = {}):
 
 # Non-grayscale defaults are from the vibrant colormap here:
 # https://personal.sron.nl/~pault/
+// TODO: #2 Change `features` to `labels` in plot_tree and adjust `README.md`...
 def plot_tree(booster, tree, features = {}, width = None, height = None,
     precision = 4, scale = 0.7, font = None, grayscale = False,
     node_shape = {}, node_line = {}, node_font = {},
