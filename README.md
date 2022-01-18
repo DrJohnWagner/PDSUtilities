@@ -28,13 +28,15 @@ See below for sample usage of both of these functions.
 	/>
 </div>
 
-The `plot_importane()` function is a plotly-based replacement
+The `plot_importance()` function is a plotly-based replacement
 for `xgboost.plot_importance()`. The APIs are similar (though
 several parameters have been renamed) but with two key differences.
 First, `PDSUtilities.xgboost.plot_importance()` does not rely on `fmap`
-to supply feature names, instead exposing a `features` parameter that
-that can either be a `list` of feature names or a `dict` that allows mapping of
-feature names. And second, `PDSUtilities.xgboost.plot_importance()` does not rely on `matplotlib`
+to supply feature names, instead exposing a `labels` parameter that
+that can either be a `list` of labels or a `dict` that allows mapping of
+feature names to labels.
+
+And second, `PDSUtilities.xgboost.plot_importance()` does not rely on `matplotlib`
 at all, instead using `plotly` for visualisation. This produces
 an interactive, publication-quality visualisation that can also
 be customised more easily, particularly using `plotly.io` templates.
@@ -49,7 +51,7 @@ https://github.com/dmlc/xgboost/blob/master/LICENSE
 The API is:
 ```
 plot_importance(
-	booster, features = {}, width = 0.6, xrange = None, yrange = None,
+	booster, labels = {}, width = 0.6, xrange = None, yrange = None,
 	title = 'Feature Importance', xlabel = 'F Score', ylabel = 'Features',
 	fmap = '', max_features = None, importance_type = 'weight',
 	show_grid = True, show_values = True)
@@ -114,9 +116,9 @@ model = pipeline.fit(xt, yt)
 [...]
 
 classifier = pipeline["classifier"]
-features = [feature for column in xt.columns]
+labels = [feature for column in xt.columns]
 
-fig = plot_importance(classifier, features = features)
+fig = plot_importance(classifier, labels = labels)
 fig.update_layout(template = "presentation", width = 700, height = 600)
 fig.show()
 ```

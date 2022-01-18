@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 # https://github.com/dmlc/xgboost/blob/master/LICENSE
 
 # TODO: #1 change features to labels and update README.md.
-def plot_importance(booster, features = {}, width = 0.6, xrange = None, yrange = None,
+def plot_importance(booster, labels = {}, width = 0.6, xrange = None, yrange = None,
     title = 'Feature Importance', xlabel = 'F Score', ylabel = 'Features', fmap = '',
     max_features = None, importance_type = 'weight', show_grid = True, show_values = True):
     """Plot importance based on fitted trees using plotly.
@@ -20,9 +20,9 @@ def plot_importance(booster, features = {}, width = 0.6, xrange = None, yrange =
     ----------
     booster : Booster, XGBModel or dict
         Booster or XGBModel instance, or dict taken by Booster.get_fscore()
-	features: list or dict of feature names for displaying.
-		* features dict maps default feature names ("f0", "f1", etc) to feature names
-		* features list is a list of feature names
+	labels: list or dict of labels for displaying feature names.
+		* labels dict maps default feature names ("f0", "f1", etc) to labels
+		* labels list is a list of labels corresponding by index to features
     show_grid : bool, Turn the axes grids on or off.  Default is True (On).
     importance_type : str, default "weight"
         How the importance is calculated: either "weight", "gain", or "cover"
@@ -72,9 +72,9 @@ def plot_importance(booster, features = {}, width = 0.6, xrange = None, yrange =
             'Booster.get_score() results in empty.  ' +
             'This maybe caused by having all trees as decision dumps.')
 
-    if isinstance(features, list):
-        features = {
-            f"f{f}": features[f] for f in range(len(features))
+    if isinstance(labels, list):
+        labels = {
+            f"f{feature}": labels[feature] for feature in range(len(labels))
         }
 
     tuples = [(k, importance[k]) for k in importance]
@@ -87,7 +87,7 @@ def plot_importance(booster, features = {}, width = 0.6, xrange = None, yrange =
 
     text = [xlabel + ": " + str(value) for value in values]
     fig = go.Figure(go.Bar(
-            y = [features.get(label, label.upper()) for label in labels],
+            y = [labels.get(label, label.upper()) for label in labels],
             x = values,
             orientation = 'h',
             width = width,
