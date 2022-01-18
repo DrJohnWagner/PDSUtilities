@@ -10,10 +10,11 @@ import plotly.graph_objects as go
 # xgboost team deserves the vast majority of credit for this code!
 # The xgboost license can be found here:
 # https://github.com/dmlc/xgboost/blob/master/LICENSE
+
+# TODO: #1 change features to labels and update README.md.
 def plot_importance(booster, features = {}, width = 0.6, xrange = None, yrange = None,
-                    title = 'Feature Importance', xlabel = 'F Score',
-                    ylabel = 'Features', fmap = '', max_features = None,
-                    importance_type = 'weight', show_grid = True, show_values = True):
+    title = 'Feature Importance', xlabel = 'F Score', ylabel = 'Features', fmap = '',
+    max_features = None, importance_type = 'weight', show_grid = True, show_values = True):
     """Plot importance based on fitted trees using plotly.
     Parameters
     ----------

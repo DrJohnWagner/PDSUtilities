@@ -1,8 +1,11 @@
 class ColorblindSafeColormaps:
     """
-     A collection of colorblind-safe colormaps
+     A collection of colorblind-safe colormaps.
     """
     def __init__(self):
+        """
+        __init__ create and initialize a ColorblindSafeColormaps object.
+        """
         self.names = ["Vibrant", "Bright", "Muted", "Medium-Contrast", "Grayscale"]
         self.colors = [
             ["#0077BB", "#CC3311", "#33BBEE", "#EE7733", "#009988", "#EE3377", "#BBBBBB"],

@@ -38,10 +38,15 @@ def apply_default(parameter, default):
         return { **default, **parameter }
     return default
 
-def get_histogram(x, color, show_legend, name, cumulative):
+def get_bins(bins, column):
+    if isinstance(bins, int):
+        return bins
+    return bins.get(column, 0)
+
+def get_histogram(x, color, show_legend, name, cumulative, bins):
     return go.Histogram(
         x = x, marker_color = color, showlegend = show_legend,
-        name = name, cumulative_enabled = cumulative,
+        name = name, cumulative_enabled = cumulative, nbinsx = bins,
         legendgroup = name,
     )
 
@@ -77,9 +82,45 @@ def get_rcwh(rows, cols, width, height, columns, values):
             height = h*rows
     return rows, cols, width, height
 
+# produces histograms for all categorical and numerical columns in a pandas dataframe
 def plot_histograms(df, target = None, rows = None, cols = None, width = None, height = None,
-    title = None, cumulative = None, barmode = "stack", opacity = 0.65, hovermode = None, template = None,
-    colors = 0, font = {}, title_font = {}, legend_font = {}):
+    title = None, cumulative = None, barmode = "stack", opacity = 0.65, bins = 0,
+    hovermode = None, template = None, colors = 0, font = {}, title_font = {}, legend_font = {}):
+    """
+    plot_histograms produces histograms for all categorical and numerical columns in a pandas dataframe.
+
+    Args:
+        df (dataframe): the pandas dataframe to plot historgrams of.
+        target (str, optional): the name of the target column whose values are used for grouping.
+            Defaults to None.
+        rows (int, optional): the number of rows in the grid the histograms are arranged in.
+            Defaults to None.
+        cols (int, optional): the number of columns in the grid the histograms are arranged in.
+            Defaults to None.
+        width (int, optional): the plot's width in pixels. Defaults to None.
+        height (int, optional): the plot's height in pixels. Defaults to None.
+        title (str or dict, optional): the title displayed at the top of the figure.
+            Defaults to None.
+        cumulative (bool, optional): produces cumulative histograms for each target variable, or the
+            entire dataset if target = None. Defaults to None.
+        barmode (str, optional): specifies whether the bars should be stacked, grouped or overlaid.
+            Defaults to "stack".
+        opacity (float, optional): set's the opacity of the bars when barmode = "overlay".
+            Defaults to 0.65.
+        bins (int or dict, optional): the number of bins for numerical colum histograms.
+            Defaults to 0.
+        hovermode (str, optional): specifies the style of hover popups. Defaults to None.
+        template (str, optional): the name of a plotly template to apply to the figure.
+            Defaults to None.
+        colors (int, str or list, optional): specifies the colors to be used for the bars.
+            Defaults to 0.
+        font (dict, optional): the font to be used in the histograms. Defaults to the default font.
+        title_font (dict, optional): the font to be used for the figure title. Defaults to font.
+        legend_font (dict, optional): the font to be used for the legend. Defaults to font.
+
+    Returns:
+        plotly.graph_objects.Figure: the plotly Figure encapsulating the histogram plots.
+    """
     DEFAULT_FONT = {
         'family': "Verdana, Helvetica, Verdana, Calibri, Garamond, Cambria, Arial",
         'size': 14,
@@ -93,9 +134,6 @@ def plot_histograms(df, target = None, rows = None, cols = None, width = None, h
     colors = 0 if colors is None else colors
     colormaps = ColorblindSafeColormaps()
     colors = colormaps.get_colors(colors)
-    if isinstance(colors, int):
-        colors = min(max(0, colors), len(DEFAULT_COLORS) - 1)
-        colors = DEFAULT_COLORS[colors]
     if hovermode is None:
         hovermode = "x unified"
     #
@@ -112,6 +150,7 @@ def plot_histograms(df, target = None, rows = None, cols = None, width = None, h
     for index, column in enumerate(columns):
         for value in values:
             name = f"{target} = {value}"
+            max_bins = get_bins(bins, column)
             color = colors[values.index(value) % len(colors)]
             if df[column].dtypes == object or len(df[column].unique()) <= len(colors):
                 categories, counts = get_categories_and_counts(df, column, target, value)
@@ -119,7 +158,7 @@ def plot_histograms(df, target = None, rows = None, cols = None, width = None, h
                 fig.append_trace(trace, 1 + index // cols, 1 + index % cols)
             else:
                 x = df[df[target] == value][column]
-                trace = get_histogram(x, color, index == 0, name, cumulative)
+                trace = get_histogram(x, color, index == 0, name, cumulative, max_bins)
                 fig.append_trace(trace, 1 + index // cols, 1 + index % cols)
         if target is None:
             if df[column].dtypes == object or len(df[column].unique()) <= len(colors):
@@ -127,7 +166,7 @@ def plot_histograms(df, target = None, rows = None, cols = None, width = None, h
                 trace = get_bar(categories, counts, colors[0], False, column)
                 fig.append_trace(trace, 1 + index // cols, 1 + index % cols)
             else:
-                trace = get_histogram(df[column], colors[0], False, column, cumulative)
+                trace = get_histogram(df[column], colors[0], False, column, cumulative, max_bins)
                 fig.append_trace(trace, 1 + index // cols, 1 + index % cols)
     # barmode = ['stack', 'group', 'overlay', 'relative']
     # barmode = "stack"
