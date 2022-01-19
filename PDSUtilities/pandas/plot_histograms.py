@@ -82,10 +82,11 @@ def get_rcwh(rows, cols, width, height, columns, values):
             height = h*rows
     return rows, cols, width, height
 
+// TODO: #7 Replcace add_default and font code with plotly.utilities in plot_histogram...
 # produces histograms for all categorical and numerical columns in a pandas dataframe
 def plot_histograms(df, target = None, rows = None, cols = None, width = None, height = None,
     title = None, cumulative = None, barmode = "stack", opacity = 0.65, bins = 0,
-    hovermode = None, template = None, colors = 0, font = {}, title_font = {}, legend_font = {}):
+    hovermode = "x unified", template = None, colors = 0, font = {}, title_font = {}, legend_font = {}):
     """
     plot_histograms produces histograms for all categorical and numerical columns in a pandas dataframe.
 
@@ -109,7 +110,8 @@ def plot_histograms(df, target = None, rows = None, cols = None, width = None, h
             Defaults to 0.65.
         bins (int or dict, optional): the number of bins for numerical colum histograms.
             Defaults to 0.
-        hovermode (str, optional): specifies the style of hover popups. Defaults to None.
+        hovermode (str, optional): specifies the style of hover popups.
+            Defaults to "x unified".
         template (str, optional): the name of a plotly template to apply to the figure.
             Defaults to None.
         colors (int, str or list, optional): specifies the colors to be used for the bars.
@@ -132,10 +134,9 @@ def plot_histograms(df, target = None, rows = None, cols = None, width = None, h
         apply_default({ 'size': font.get('size', 16) + 4 }, font)
     )
     colors = 0 if colors is None else colors
-    colormaps = ColorblindSafeColormaps()
-    colors = colormaps.get_colors(colors)
-    if hovermode is None:
-        hovermode = "x unified"
+    if isinstance(colors, int):
+        colormaps = ColorblindSafeColormaps()
+        colors = colormaps.get_colors(colors)
     #
     values = [] if target is None else [value for value in df[target].unique()]
     columns = [column for column in df.columns if column != target]

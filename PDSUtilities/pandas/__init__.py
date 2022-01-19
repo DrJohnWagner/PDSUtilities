@@ -1,1 +1,3 @@
 from PDSUtilities.pandas.plot_histograms import plot_histograms
+from PDSUtilities.pandas.plot_parallel_categories import plot_parallel_categories
+from PDSUtilities.pandas.plot_parallel_coordinates import plot_parallel_coordinates

@@ -4,6 +4,13 @@ import numpy as np
 from igraph import Graph
 import plotly.graph_objects as go
 
+from PDSUtilities.plotly import apply_default
+from PDSUtilities.plotly import get_font
+from PDSUtilities.plotly import get_shape
+from PDSUtilities.plotly import get_line
+from PDSUtilities.plotly import get_arrow
+from PDSUtilities.plotly import get_label
+
 def get_leaf(index, line):
     return (int(index), float(line.split("=")[1]))
 
@@ -71,10 +78,10 @@ def get_graph(dump):
     xy = graph.layout_reingold_tilford(root = 0)
     return leaves, nodes, edges, graph, xy
 
-def apply_default(parameter, default):
-    if parameter:
-        return { **default, **parameter }
-    return default
+# def apply_default(parameter, default):
+#     if parameter:
+#         return { **default, **parameter }
+#     return default
 
 def get_edge_annotation(edge, xy, w, labels = {}, colors = {}, arrow = {}, label = {}, font = {}):
     i, j, text = edge
@@ -161,7 +168,8 @@ def get_leaves_scatter_plot(leaves, xy, precision, font = {}):
 
 # Non-grayscale defaults are from the vibrant colormap here:
 # https://personal.sron.nl/~pault/
-// TODO: #2 Change `features` to `labels` in plot_tree and adjust `README.md`...
+# TODO: #2 Change `features` to `labels` in plot_tree and adjust `README.md`...
+# TODO: #6 Add title to plot_tree...
 def plot_tree(booster, tree, features = {}, width = None, height = None,
     precision = 4, scale = 0.7, font = None, grayscale = False,
     node_shape = {}, node_line = {}, node_font = {},
@@ -198,31 +206,15 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
         plotly.graph_objects.Figure: the plotly Figure encapsulating the tree plot.
     """
     #
-    DEFAULT_FONT = {
-        'family': "Verdana, Helvetica, Verdana, Calibri, Garamond, Cambria, Arial",
-        'size': 16,
-        'color': "#000000"
-    }
-    DEFAULT_NODE_SHAPE = {
-        'type': "rect",
-        'fillcolor': "#CBCBCB" if grayscale else "rgba(0,153,136,0.75)", #"#009988", #"#C2CA95",
-        'opacity': 1.0,
-    }
-    DEFAULT_NODE_LINE = {
-        'color': "#666666" if grayscale else "rgb(238,119,51)", #"olive",
-        'width': 1,
-        'dash': "solid", # ['solid', 'dot', 'dash', 'longdash', 'dashdot', 'longdashdot']
-    }
-    DEFAULT_LEAF_SHAPE = {
-        'type': "rounded",
-        'fillcolor': "#EDEDED" if grayscale else "rgba(238,119,51,0.75)", #"#EE7733", #"#E8D8C0", #"#B5B97A",
-        'opacity': 1.0,
-    }
-    DEFAULT_LEAF_LINE = {
-        'color': "#777777" if grayscale else "rgb(0,153,136)", #"brown", #"olive",
-        'width': 1,
-        'dash': "solid", # ['solid', 'dot', 'dash', 'longdash', 'dashdot', 'longdashdot']
-    }
+    default_font = get_font()
+    default_node_shape = get_shape(fillcolor = "#CBCBCB" if grayscale else "rgba(0,153,136,0.75)")
+    default_node_line  = get_line(color = "#666666" if grayscale else "rgb(238,119,51)")
+    default_leaf_shape = get_shape(fillcolor = "#EDEDED" if grayscale else "rgba(238,119,51,0.75)", type = "rounded")
+    default_leaf_line  = get_line(color = "#777777" if grayscale else "rgb(0,153,136)")
+    default_edge_line  = get_line(width = 1.5)
+    default_edge_arrow = get_arrow(arrowhead = 3, arrowsize = 1.5)
+    default_edge_label = get_label()
+
     DEFAULT_EDGE_LABELS = {
         'Yes': "Yes",
         'No': "No",
@@ -230,7 +222,6 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
         'Yes/Missing': "Yes/Missing",
         'No/Missing': "No/Missing"
     }
-    # COLORMAP = ["#005ab5", "#DC3220"]
     DEFAULT_EDGE_COLORS = {
         'Yes': "#222222" if grayscale else "rgb(0,153,136)",
         'No': "#888888" if grayscale else "rgb(238,119,51)",
@@ -238,43 +229,24 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
         'Yes/Missing':  "#222222" if grayscale else "rgb(0,153,136)",
         'No/Missing': "#888888" if grayscale else "rgb(238,119,51)",
     }
-    DEFAULT_EDGE_ARROW = {
-        'arrowhead': 3, # Integer between or equal to 0 and 8
-        'arrowsize': 1.5, # Relative to arrowwidth
-        'arrowwidth': 1,
-    }
-    DEFAULT_EDGE_LINE = {
-        'width': 1.5,
-        'dash': "solid", # ['solid', 'dot', 'dash', 'longdash', 'dashdot', 'longdashdot']
-    }
-    DEFAULT_EDGE_LABEL = {
-        'align': "center",
-        'bgcolor': "#FFFFFF",
-        'bordercolor': "rgba(0,0,0,0)",
-        'borderpad': 1,
-        'borderwidth': 1,
-        'opacity': 1.0,
-        'textangle': 0,
-        'valign': "middle",
-        'visible': True,
-    }
-    font = apply_default(font, DEFAULT_FONT)
+    font = apply_default(default_font, font)
     #
-    node_shape = apply_default(node_shape, DEFAULT_NODE_SHAPE)
-    node_line = apply_default(node_line, DEFAULT_NODE_LINE)
-    node_font = apply_default(node_font, font)
+    node_shape = apply_default(default_node_shape, node_shape)
+    node_line = apply_default(default_node_line, node_line)
+    node_font = apply_default(font, node_font)
     #
-    leaf_shape = apply_default(leaf_shape, DEFAULT_LEAF_SHAPE)
-    leaf_line  = apply_default(leaf_line,  DEFAULT_LEAF_LINE)
-    leaf_font = apply_default(leaf_font, font)
+    leaf_shape = apply_default(default_leaf_shape, leaf_shape)
+    leaf_line  = apply_default(default_leaf_line, leaf_line)
+    leaf_font = apply_default(font, leaf_font)
     #
     edge_labels = apply_default(edge_labels, DEFAULT_EDGE_LABELS)
     edge_colors = apply_default(edge_colors, DEFAULT_EDGE_COLORS)
-    edge_arrow  = apply_default(edge_arrow,  DEFAULT_EDGE_ARROW)
-    edge_line = apply_default(edge_line, DEFAULT_EDGE_LINE)
-    edge_label = apply_default(edge_label, DEFAULT_EDGE_LABEL)
-    edge_font = apply_default(edge_font,
-        apply_default({ 'size': font.get('size', 16) - 2 }, font)
+    edge_arrow  = apply_default(default_edge_arrow, edge_arrow)
+    edge_line = apply_default(default_edge_line, edge_line)
+    edge_label = apply_default(default_edge_label, edge_label)
+    edge_font = apply_default(
+        apply_default(font, edge_font),
+        size = font.get('size', 16) - 2
     )
     #
     if isinstance(features, list):
@@ -327,22 +299,24 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     nodes_scatter_plot  = get_nodes_scatter_plot (nodes, xy, features, precision, node_font)
     leaves_scatter_plot = get_leaves_scatter_plot(leaves, xy, precision, leaf_font)
     #
+    shapes = get_edge_shapes(
+        edges, xy, w, colors = edge_colors, line = edge_line
+    ) + get_node_or_leaf_shapes(
+        nodes, xy, w, h, pixels_x, pixels_y, node_shape, node_line
+    ) + get_node_or_leaf_shapes(
+        leaves, xy, w, h, pixels_x, pixels_y, leaf_shape, leaf_line
+    )
+    #
     layout = go.Layout(
+        shapes = shapes,
         font = font,
         showlegend = False,
         autosize = False,
+        plot_bgcolor = "#FFFFFF",
         width = width,
         height = height,
-        plot_bgcolor = "#FFFFFF",
         xaxis = dict(visible = False),
         yaxis = dict(visible = False),
-        shapes = get_edge_shapes(
-            edges, xy, w, colors = edge_colors, line = edge_line
-        ) + get_node_or_leaf_shapes(
-            nodes, xy, w, h, pixels_x, pixels_y, node_shape, node_line
-        ) + get_node_or_leaf_shapes(
-            leaves, xy, w, h, pixels_x, pixels_y, leaf_shape, leaf_line
-        ),
         xaxis_range = [min_x, max_x],
         yaxis_range = [min_y, max_y],
     )
