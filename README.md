@@ -329,13 +329,15 @@ produces histograms grouped by the values in the `target` column:
 
 The `plot_histograms()` function has the following API:
 ```
-plot_histograms(df, target = None, rows = None, cols = None, width = None, height = None,
+plot_histograms(df, target = None, columns = None, rows = None, cols = None, width = None, height = None,
     title = None, cumulative = None, barmode = "stack", opacity = 0.65, bins = 0,
 	hovermode = None, template = None, colors = 0, font = {}, title_font = {}, legend_font = {})
 ```
 
 If `target = None` then totals are plotted for every column in the dataframe. If instead, `target`
 is the name of a column, then totals for each value of the `target` are plotted for every column.
+
+If `columns = None` then all columns are plotted. Otherwise, only the columns in `columns` are plotted.
 
 If either or both of the number of `rows` and `cols` are specified, those are used in arranging the
 histograms in the grid. Otherwise values are chosen automatically in a reasonable manner. The same

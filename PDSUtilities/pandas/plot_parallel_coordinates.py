@@ -59,7 +59,6 @@ def plot_parallel_coordinates(df, target = None, columns = None, labels = {},
         colormaps = ColorblindSafeColormaps()
         colors = colormaps.get_colors(colors)
     #
-    #
     if columns is None:
         columns = [column for column in df.columns if df[column].dtypes != 'O']
     if not isinstance(columns, list):
