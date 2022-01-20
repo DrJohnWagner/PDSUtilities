@@ -5,6 +5,8 @@ import pandas as pd
 import plotly.io as pio
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from PDSUtilities.plotly import apply_default
+from PDSUtilities.plotly import get_font
 from PDSUtilities.plotly import ColorblindSafeColormaps
 
 def get_categories_and_counts(df, column, target, value):
@@ -32,11 +34,6 @@ def get_width(index):
     WIDTHS = [0.0, 0.1, 0.23, 0.34, 0.46, 0.65, 0.8]
     width = WIDTHS[index] if index < len(WIDTHS) else WIDTHS[-1]
     return width
-
-def apply_default(parameter, default):
-    if parameter:
-        return { **default, **parameter }
-    return default
 
 def get_bins(bins, column):
     if isinstance(bins, int):
@@ -82,7 +79,6 @@ def get_rcwh(rows, cols, width, height, columns, values):
             height = h*rows
     return rows, cols, width, height
 
-// TODO: #7 Replcace add_default and font code with plotly.utilities in plot_histogram...
 # produces histograms for all categorical and numerical columns in a pandas dataframe
 def plot_histograms(df, target = None, columns = None, rows = None, cols = None, width = None, height = None,
     title = None, cumulative = None, barmode = "stack", opacity = 0.65, bins = 0,
@@ -124,15 +120,12 @@ def plot_histograms(df, target = None, columns = None, rows = None, cols = None,
     Returns:
         plotly.graph_objects.Figure: the plotly Figure encapsulating the histogram plots.
     """
-    DEFAULT_FONT = {
-        'family': "Verdana, Helvetica, Verdana, Calibri, Garamond, Cambria, Arial",
-        'size': 14,
-        'color': "#000000"
-    }
-    font = apply_default(font, DEFAULT_FONT)
-    legend_font = apply_default(legend_font, font)
-    title_font = apply_default(title_font,
-        apply_default({ 'size': font.get('size', 16) + 4 }, font)
+    default_font = get_font()
+    font = apply_default(default_font, font)
+    legend_font = apply_default(font, legend_font)
+    title_font = apply_default(
+        apply_default(font, { 'size': font.get('size', 16) + 4 }),
+        title_font
     )
     colors = 0 if colors is None else colors
     if isinstance(colors, int):
