@@ -21,9 +21,9 @@ def get_node(index, line):
     y, n, m = [y.split("=")[1], n.split("=")[1], m.split("=")[1]]
     return(int(index), feature.upper(), float(value), int(y), int(n), int(m))
 
-def get_node_labels(nodes, features, precision):
+def get_node_labels(nodes, labels, precision):
     return [
-        features.get(feature, feature) + " < " + str(round(value, precision)) for _, feature, value in nodes
+        labels.get(feature, feature) + " < " + str(round(value, precision)) for _, feature, value in nodes
     ]
 
 def get_leaf_labels(leaves, precision):
@@ -51,8 +51,8 @@ def get_min_max_delta(v, indent):
     max_v = max_v + indent*delta_v
     return min_v, max_v, max_v - min_v
 
-def get_features(features):
-    return { f"F{f}": features[f] for f in range(len(features))}
+def get_labels(labels):
+    return { f"F{f}": labels[f] for f in range(len(labels))}
 
 def get_graph(dump):
     lines = [line.strip().split(":") for line in dump.splitlines()]
@@ -152,11 +152,11 @@ def get_node_or_leaf_shapes(leaves_or_nodes, xy, w, h, px, py, shape = {}, line 
         shapes.append(get_shape_from_type(shape_type, xy[i][0], xy[i][1], w, h, px, py, shape, line))
     return shapes
 
-def get_nodes_scatter_plot(nodes, xy, features, precision, font = {}):
+def get_nodes_scatter_plot(nodes, xy, labels, precision, font = {}):
     x = [xy[i][0] for i, _, _ in nodes]
     y = [xy[i][1] for i, _, _ in nodes]
     return go.Scatter(x = x, y = y, mode = 'text', textfont = font,
-        text = get_node_labels(nodes, features, precision),
+        text = get_node_labels(nodes, labels, precision),
     )
 
 def get_leaves_scatter_plot(leaves, xy, precision, font = {}):
@@ -168,9 +168,8 @@ def get_leaves_scatter_plot(leaves, xy, precision, font = {}):
 
 # Non-grayscale defaults are from the vibrant colormap here:
 # https://personal.sron.nl/~pault/
-# TODO: #2 Change `features` to `labels` in plot_tree and adjust `README.md`...
 # TODO: #6 Add title to plot_tree...
-def plot_tree(booster, tree, features = {}, width = None, height = None,
+def plot_tree(booster, tree, labels = {}, width = None, height = None,
     precision = 4, scale = 0.7, font = None, grayscale = False,
     node_shape = {}, node_line = {}, node_font = {},
     leaf_shape = {}, leaf_line = {}, leaf_font = {},
@@ -182,7 +181,7 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     Args:
         booster (Booster): the xgboost booster containing the tree to plot
         tree (int): the index of the tree to plot
-        features (list[str], optional): list of labels to use in place of feature names. Defaults to {}.
+        labels (list[str], optional): list of labels to use in place of feature names. Defaults to {}.
         width (int, optional): the width of the figure to be produced. Defaults to None.
         height (int, optional): the height of the figure to be produced. Defaults to None.
         precision (int, optional): the number of decimal places when plotting numbers. Defaults to 4.
@@ -249,8 +248,8 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
         size = font.get('size', 16) - 2
     )
     #
-    if isinstance(features, list):
-        features = get_features(features)
+    if isinstance(labels, list):
+        labels = get_labels(labels)
     #
     dump = booster.get_dump()[tree]
     leaves, nodes, edges, graph, xy = get_graph(dump)
@@ -279,7 +278,7 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     #
     # KLUDGE: We need to get font metrics and do this right...
     w, h = scale*font.get('size', 14)*np.max([len(label)
-        for label in get_node_labels(nodes, features, precision) + get_leaf_labels(leaves, precision)
+        for label in get_node_labels(nodes, labels, precision) + get_leaf_labels(leaves, precision)
     ]), 3*font.get('size', 14)
     #
     if width is None:
@@ -296,7 +295,7 @@ def plot_tree(booster, tree, features = {}, width = None, height = None,
     # KLUDGE: We need to get font metrics and do this right...
     w, h = w/pixels_x, h/pixels_y
     #
-    nodes_scatter_plot  = get_nodes_scatter_plot (nodes, xy, features, precision, node_font)
+    nodes_scatter_plot  = get_nodes_scatter_plot (nodes, xy, labels, precision, node_font)
     leaves_scatter_plot = get_leaves_scatter_plot(leaves, xy, precision, leaf_font)
     #
     shapes = get_edge_shapes(

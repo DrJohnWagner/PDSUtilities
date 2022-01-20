@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 import plotly.io as pio
 import plotly.graph_objects as go
-from sklearn.preprocessing import LabelEncoder
 from PDSUtilities.plotly import apply_default
 from PDSUtilities.plotly import get_font
 from PDSUtilities.plotly import ColorblindSafeColormaps
@@ -17,10 +16,10 @@ def get_line(df, target, colors):
     if target is not None:
         values = df[target]
         if df[target].dtypes == 'O':
-            values = LabelEncoder().fit_transform(df[target])
+            values = df[target].astype('category').cat.codes
         line['color'] = values
         line['colorscale'] = [
-            colors[index] for index in range(len(np.unique(values)))
+            colors[index % len(colors)] for index in range(len(np.unique(values)))
         ]
     return line
 
@@ -42,6 +41,11 @@ def plot_parallel_categories(df, target = None, columns = None, labels = {},
     #
     if columns is None:
         columns = [column for column in df.columns if df[column].dtypes == 'O']
+    if not isinstance(columns, list):
+        columns = [column for column in columns]
+    if target is not None and target not in columns:
+        columns = [target] + columns
+    #
     if target is not None:
         if target in columns:
             columns.remove(target)
@@ -66,5 +70,7 @@ def plot_parallel_categories(df, target = None, columns = None, labels = {},
         fig.update_layout(width = width)
     if height is not None:
         fig.update_layout(height = height)
+    # if template is not None:
+    #     fig.update_layout(template = template)
     fig.update_layout(font = font)
     return fig

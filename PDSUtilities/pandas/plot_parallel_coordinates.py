@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import plotly.io as pio
 import plotly.graph_objects as go
-from sklearn.preprocessing import LabelEncoder
+from pandas.api.types import is_integer_dtype
 from PDSUtilities.plotly import apply_default
 from PDSUtilities.plotly import get_font
 from PDSUtilities.plotly import ColorblindSafeColormaps
@@ -17,7 +17,7 @@ def get_line(df, target, colors):
     if target is not None:
         values = df[target]
         if df[target].dtypes == 'O':
-            values = LabelEncoder().fit_transform(df[target])
+            values = df[target].astype('category').cat.codes
         line['color'] = values
         line['colorscale'] = [
             colors[index] for index in range(len(np.unique(values)))
@@ -31,18 +31,20 @@ def get_dimension(df, column, labels):
         name = column,
     )
     if df[column].dtypes == 'O':
-        le = LabelEncoder()
-        dimension['values'] = le.fit_transform(df[column])
-        dimension['tickvals'] = np.sort(np.unique(dimension['values']))
-        dimension['ticktext'] = le.inverse_transform(dimension['tickvals'])
-    elif df[column].dtypes <= np.int64 and len(df[column].unique()) <= 8:
+        categories = df[column].astype('category').cat
+        dimension['values'] = categories.codes
+        dimension['tickvals'] = np.sort(np.unique(categories.codes))
+        dimension['ticktext'] = categories.categories
+    elif is_integer_dtype(df[column]) and len(df[column].unique()) <= 8:
         dimension['tickvals'] = np.sort(df[column].unique())
-        dimension['ticktext'] = dimension['tickvals']
+        dimension['ticktext'] = np.sort(df[column].unique())
     return dimension
 
+# TODO: #8 add template and misc args, comments and update README.md for plot_parallel functions...
 def plot_parallel_coordinates(df, target = None, columns = None, labels = {},
     width = None, height = None, title = None, colors = 0,
     font = {}, tick_font = {}, label_font = {}, title_font = {}):
+    #
     default_font = get_font()
     font = apply_default(default_font, font)
     tick_font = apply_default(font, tick_font)
@@ -57,8 +59,14 @@ def plot_parallel_coordinates(df, target = None, columns = None, labels = {},
         colormaps = ColorblindSafeColormaps()
         colors = colormaps.get_colors(colors)
     #
+    #
     if columns is None:
         columns = [column for column in df.columns if df[column].dtypes != 'O']
+    if not isinstance(columns, list):
+        columns = [column for column in columns]
+    if target is not None and target not in columns:
+        columns = [target] + columns
+    #
     if target is not None and target not in columns:
         columns = [target] + columns
     fig = go.Figure(go.Parcoords(
@@ -80,5 +88,7 @@ def plot_parallel_coordinates(df, target = None, columns = None, labels = {},
         fig.update_layout(width = width)
     if height is not None:
         fig.update_layout(height = height)
+    # if template is not None:
+    #     fig.update_layout(template = template)
     fig.update_layout(font = font)
     return fig

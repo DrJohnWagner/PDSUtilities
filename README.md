@@ -144,11 +144,11 @@ from PDSUtilities.xgboost import plot_tree
 
 booster = pipeline["classifier"].get_booster()
 
-fig = plot_tree(booster, tree = 0, features = features)
+fig = plot_tree(booster, tree = 0, labels = labels)
 fig.show()
 ```
 In this example, `tree` is the tree number and, as with `plot_importance()`,
-the `features` parameter can be either a `list` or a `dict`.
+the `labels` parameter can be either a `list` or a `dict`.
 
 Note that the default colours were chosen from a vibrant, colourblind-friendly
 palette, but can be completely configured via a number of additional configuration
@@ -167,7 +167,7 @@ via plotly's extensive API.
 
 The `plot_tree()` API is:
 ```
-plot_tree(booster, tree, features = {}, width = None, height = None,
+plot_tree(booster, tree, labels = {}, width = None, height = None,
     precision = 4, scale = 0.7, font = None, grayscale = False,
     node_shape = {}, node_line = {}, node_font = {},
     leaf_shape = {}, leaf_line = {}, leaf_font = {},
