@@ -84,7 +84,7 @@ def get_rcwh(rows, cols, width, height, columns, values):
 
 // TODO: #7 Replcace add_default and font code with plotly.utilities in plot_histogram...
 # produces histograms for all categorical and numerical columns in a pandas dataframe
-def plot_histograms(df, target = None, rows = None, cols = None, width = None, height = None,
+def plot_histograms(df, target = None, columns = None, rows = None, cols = None, width = None, height = None,
     title = None, cumulative = None, barmode = "stack", opacity = 0.65, bins = 0,
     hovermode = "x unified", template = None, colors = 0, font = {}, title_font = {}, legend_font = {}):
     """
@@ -94,6 +94,7 @@ def plot_histograms(df, target = None, rows = None, cols = None, width = None, h
         df (dataframe): the pandas dataframe to plot historgrams of.
         target (str, optional): the name of the target column whose values are used for grouping.
             Defaults to None.
+        columns (list[str], optional): a list of column names to plot. Defaults to all columns.
         rows (int, optional): the number of rows in the grid the histograms are arranged in.
             Defaults to None.
         cols (int, optional): the number of columns in the grid the histograms are arranged in.
@@ -139,9 +140,14 @@ def plot_histograms(df, target = None, rows = None, cols = None, width = None, h
         colors = colormaps.get_colors(colors)
     #
     values = [] if target is None else [value for value in df[target].unique()]
-    columns = [column for column in df.columns if column != target]
+        #
+    if columns is None:
+        columns = [column for column in df.columns if column != target]
+    if not isinstance(columns, list):
+        columns = [column for column in columns]
     if target is not None and target in columns:
         columns.remove(target)
+    #
     rows, cols, width, height = get_rcwh(rows, cols, width, height, columns, values)
     fig = make_subplots(rows = rows, cols = cols,
         horizontal_spacing = 0.25/cols,
