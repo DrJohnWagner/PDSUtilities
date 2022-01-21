@@ -8,6 +8,9 @@ from PDSUtilities.plotly import apply_default
 from PDSUtilities.plotly import get_font
 from PDSUtilities.plotly import ColorblindSafeColormaps
 
+def get_labels(labels):
+    return { f"F{f}": labels[f] for f in range(len(labels))}
+
 def get_line(df, target, colors):
     line = dict(
         color = colors[0],
@@ -50,6 +53,8 @@ def plot_parallel_categories(df, target = None, columns = None, labels = {},
         if target in columns:
             columns.remove(target)
         columns = [target] + columns
+    if isinstance(labels, list):
+        labels = get_labels(labels)
     fig = go.Figure(go.Parcats(
         dimensions = list([
             dict(

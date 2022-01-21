@@ -33,6 +33,11 @@ DEFAULT_LABEL = {
 	'visible': True,
 }
 
+DEFAULT_MARKER = dict(
+    size = 2,
+    color = "#CCCCCC",
+)
+
 def apply_default(old_thing, new_thing):
     return { **old_thing, **new_thing } if new_thing is not None else old_thing
 
@@ -69,3 +74,25 @@ def get_label(label = None):
     label = apply_default(DEFAULT_LABEL, label)
     # label['bgcolor'] = bgcolor if bgcolor is not None else label['bgcolor']
     return label
+
+# Tweak this API as needed...
+def get_marker(marker = None, size = None, color = None):
+    marker = apply_default(DEFAULT_MARKER, marker)
+    marker['size'] = size if size is not None else marker['size']
+    marker['color'] = color if color is not None else marker['color']
+    return marker
+
+def update_layout(fig, width = None, height = None,
+    title = None, title_font = {}, font = {}, template = None):
+    if title is not None and isinstance(title, str):
+        title = { 'text': title, 'x': 0.5, 'xanchor': "center" }
+    if title is not None:
+        fig.update_layout(title = title, title_font = title_font)
+    if width is not None:
+        fig.update_layout(width = width)
+    if height is not None:
+        fig.update_layout(height = height)
+    fig.update_layout(font = font)
+    if template is not None:
+        fig.update(template = template)
+    return fig

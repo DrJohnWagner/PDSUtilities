@@ -5,3 +5,5 @@ from PDSUtilities.plotly.utilities import get_shape
 from PDSUtilities.plotly.utilities import get_line
 from PDSUtilities.plotly.utilities import get_arrow
 from PDSUtilities.plotly.utilities import get_label
+from PDSUtilities.plotly.utilities import get_marker
+from PDSUtilities.plotly.utilities import update_layout

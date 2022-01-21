@@ -238,8 +238,8 @@ def plot_tree(booster, tree, labels = {}, width = None, height = None,
     leaf_line  = apply_default(default_leaf_line, leaf_line)
     leaf_font = apply_default(font, leaf_font)
     #
-    edge_labels = apply_default(edge_labels, DEFAULT_EDGE_LABELS)
-    edge_colors = apply_default(edge_colors, DEFAULT_EDGE_COLORS)
+    edge_labels = apply_default(DEFAULT_EDGE_LABELS, edge_labels)
+    edge_colors = apply_default(DEFAULT_EDGE_COLORS, edge_colors)
     edge_arrow  = apply_default(default_edge_arrow, edge_arrow)
     edge_line = apply_default(default_edge_line, edge_line)
     edge_label = apply_default(default_edge_label, edge_label)
