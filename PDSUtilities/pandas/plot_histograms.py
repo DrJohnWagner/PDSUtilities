@@ -129,8 +129,7 @@ def plot_histograms(df, target = None, columns = None, rows = None, cols = None,
     )
     colors = 0 if colors is None else colors
     if isinstance(colors, int):
-        colormaps = ColorblindSafeColormaps()
-        colors = colormaps.get_colors(colors)
+        colors = ColorblindSafeColormaps().get_colors(colors)
     #
     values = [] if target is None else [value for value in df[target].unique()]
         #
