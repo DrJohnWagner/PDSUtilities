@@ -1,3 +1,5 @@
+from PDSUtilities.plotly import ColorblindSafeColormaps
+
 DEFAULT_FONT = {
 	'family': "Verdana, Helvetica, Verdana, Calibri, Garamond, Cambria, Arial",
 	'size': 16,
@@ -82,17 +84,40 @@ def get_marker(marker = None, size = None, color = None):
     marker['color'] = color if color is not None else marker['color']
     return marker
 
-def update_layout(fig, width = None, height = None,
-    title = None, title_font = {}, font = {}, template = None):
-    if title is not None and isinstance(title, str):
-        title = { 'text': title, 'x': 0.5, 'xanchor': "center" }
-    if title is not None:
-        fig.update_layout(title = title, title_font = title_font)
+def update_layout(fig, font = {}, template = None):
+    fig.update_layout(font = font)
+    if template is not None:
+        fig.update(template = template)
+    return fig
+
+def hex_to_rgb(value):
+    value = value.lstrip('#')
+    lv = len(value)
+    return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+
+def rgb_to_hex(rgb):
+    return "#%02x%02x%02x" % rgb
+
+def get_colors(colors, default = 0):
+    colors = default if colors is None else colors
+    if isinstance(colors, int):
+        colors = ColorblindSafeColormaps().get_colors(colors)
+    return colors
+
+def update_width_and_height(fig, width = None, height = None):
     if width is not None:
         fig.update_layout(width = width)
     if height is not None:
         fig.update_layout(height = height)
-    fig.update_layout(font = font)
-    if template is not None:
-        fig.update(template = template)
+    return fig
+
+def update_title(fig, title, title_font = {}, font = {}):
+    title_font = apply_default(
+        apply_default(font, { 'size': font.get('size', 16) + 4 }),
+        title_font
+    )
+    if title is not None and isinstance(title, str):
+        title = { 'text': title, 'x': 0.5, 'xanchor': "center" }
+    if title is not None:
+        fig.update_layout(title = title, title_font = title_font)
     return fig

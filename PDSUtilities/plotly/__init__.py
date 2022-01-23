@@ -7,3 +7,8 @@ from PDSUtilities.plotly.utilities import get_arrow
 from PDSUtilities.plotly.utilities import get_label
 from PDSUtilities.plotly.utilities import get_marker
 from PDSUtilities.plotly.utilities import update_layout
+from PDSUtilities.plotly.utilities import hex_to_rgb
+from PDSUtilities.plotly.utilities import rgb_to_hex
+from PDSUtilities.plotly.utilities import get_colors
+from PDSUtilities.plotly.utilities import update_width_and_height
+from PDSUtilities.plotly.utilities import update_title
