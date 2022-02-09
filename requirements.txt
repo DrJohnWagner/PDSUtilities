@@ -2,3 +2,6 @@ numpy
 xgboost
 plotly
 igraph
+pandas
+ipywidgets
+scikit-learn

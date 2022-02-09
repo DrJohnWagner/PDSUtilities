@@ -121,3 +121,22 @@ def update_title(fig, title, title_font = {}, font = {}):
     if title is not None:
         fig.update_layout(title = title, title_font = title_font)
     return fig
+
+def remove_ticks_and_tick_labels(fig, rows = None, cols = None):
+    if rows is not None and cols is not None:
+        for row in range(rows):
+            for col in range(cols):
+                fig.update_xaxes(row = row + 1, col = col + 1,
+                    ticks = "", tickfont_size = 1, tickfont_color = "rgba(0,0,0,0)"
+                )
+                fig.update_yaxes(row = row + 1, col = col + 1,
+                    ticks = "", tickfont_size = 1, tickfont_color = "rgba(0,0,0,0)"
+                )
+    else:
+        fig.update_xaxes(
+            ticks = "", tickfont_size = 1, tickfont_color = "rgba(0,0,0,0)"
+        )
+        fig.update_yaxes(
+            ticks = "", tickfont_size = 1, tickfont_color = "rgba(0,0,0,0)"
+        )
+    return fig

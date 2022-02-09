@@ -4,12 +4,12 @@ import numpy as np
 import pandas as pd
 import plotly.io as pio
 import plotly.graph_objects as go
+from PDSUtilities.pandas import get_categorical_columns
+from PDSUtilities.plotly import get_colors
 from PDSUtilities.plotly import apply_default
 from PDSUtilities.plotly import get_font
-from PDSUtilities.plotly import ColorblindSafeColormaps
-
-def get_labels(labels):
-    return { f"F{f}": labels[f] for f in range(len(labels))}
+from PDSUtilities.plotly import update_title
+from PDSUtilities.plotly import update_width_and_height
 
 def get_line(df, target, colors):
     line = dict(
@@ -28,24 +28,11 @@ def get_line(df, target, colors):
 
 def plot_parallel_categories(df, target = None, columns = None, labels = {},
     width = None, height = None, title = None, colors = 0,
-    font = {}, tick_font = {}, label_font = {}, title_font = {}):
-    default_font = get_font()
-    font = apply_default(default_font, font)
-    tick_font = apply_default(font, tick_font)
-    label_font = apply_default(font, label_font)
-    title_font = apply_default(
-        apply_default(font, { 'size': font.get('size', 16) + 4 }),
-        title_font
-    )
-    colors = 0 if colors is None else colors
-    if isinstance(colors, int):
-        colormaps = ColorblindSafeColormaps()
-        colors = colormaps.get_colors(colors)
+    font = {}, tick_font = {}, axis_font = {}, title_font = {}):
+    font = apply_default(get_font(), font)
     #
-    if columns is None:
-        columns = [column for column in df.columns if df[column].dtypes == 'O']
-    if not isinstance(columns, list):
-        columns = [column for column in columns]
+    colors = get_colors(colors)
+    columns = get_categorical_columns(df, columns)
     if target is not None and target not in columns:
         columns = [target] + columns
     #
@@ -53,8 +40,6 @@ def plot_parallel_categories(df, target = None, columns = None, labels = {},
         if target in columns:
             columns.remove(target)
         columns = [target] + columns
-    if isinstance(labels, list):
-        labels = get_labels(labels)
     fig = go.Figure(go.Parcats(
         dimensions = list([
             dict(
@@ -64,17 +49,11 @@ def plot_parallel_categories(df, target = None, columns = None, labels = {},
             ) for column in columns
         ]),
         line = get_line(df, target, colors),
-        labelfont = label_font,
-        tickfont = tick_font,
+        labelfont = apply_default(font, axis_font),
+        tickfont = apply_default(font, tick_font),
     ))
-    if title is not None and isinstance(title, str):
-        title = { 'text': title, 'x': 0.5, 'xanchor': "center" }
-    if title is not None:
-        fig.update_layout(title = title, title_font = title_font)
-    if width is not None:
-        fig.update_layout(width = width)
-    if height is not None:
-        fig.update_layout(height = height)
+    fig = update_width_and_height(fig, width, height)
+    fig = update_title(fig, title, title_font, font)
     # if template is not None:
     #     fig.update_layout(template = template)
     fig.update_layout(font = font)

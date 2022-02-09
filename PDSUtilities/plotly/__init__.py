@@ -12,3 +12,6 @@ from PDSUtilities.plotly.utilities import rgb_to_hex
 from PDSUtilities.plotly.utilities import get_colors
 from PDSUtilities.plotly.utilities import update_width_and_height
 from PDSUtilities.plotly.utilities import update_title
+from PDSUtilities.plotly.utilities import remove_ticks_and_tick_labels
+#
+from PDSUtilities.plotly.create_image_subplots import create_image_subplots

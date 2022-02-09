@@ -16,9 +16,12 @@ from PDSUtilities.plotly import update_title
 from PDSUtilities.plotly import update_width_and_height
 from PDSUtilities.pandas import get_numerical_columns
 
-# TODO: this is wrong it's only correct for plot_tree...
-def get_labels(labels):
-    return { f"F{f}": labels[f] for f in range(len(labels))}
+def get_labels(columns, labels):
+    if isinstance(labels, list):
+        message = "Length of labels list must match length of columns list..."
+        assert len(columns) == len(labels), message
+        labels = { f"{columns[c]}": labels[c] for c in range(len(columns))}
+    return labels
 
 def get_color(value, colors):
     rlo, glo, blo = colors[1]
@@ -60,8 +63,7 @@ def plot_correlation_triangle(df, columns = None, labels = {},
     colors = get_colors(colors)
     colors = [hex_to_rgb(color) for color in colors]
     columns = get_numerical_columns(df, columns)
-    if isinstance(labels, list):
-        labels = get_labels(labels)
+    labels = get_labels(columns, labels)
     rows = [columns[c] for c in range(1, len(columns)    )]
     cols = [columns[c] for c in range(0, len(columns) - 1)]
     correlations = df[columns].corr()

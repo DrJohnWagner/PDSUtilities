@@ -14,8 +14,12 @@ from PDSUtilities.plotly import update_layout
 from PDSUtilities.plotly import update_title
 from PDSUtilities.plotly import update_width_and_height
 
-def get_labels(labels):
-    return { f"F{f}": labels[f] for f in range(len(labels))}
+def get_labels(columns, labels):
+    if isinstance(labels, list):
+        message = "Length of labels list must match length of columns list..."
+        assert len(columns) == len(labels), message
+        labels = { f"{columns[c]}": labels[c] for c in range(len(columns))}
+    return labels
 
 def get_correlation_label(correlations, columns, labels, row, col, precision, align = "middle"):
     BR = "<br />"
@@ -39,15 +43,6 @@ def get_scatter_text(x, y, text, font = {}):
         mode = 'text', showlegend = False, hoverinfo = "skip",
     )
 
-# font
-# axis_font x
-# hover_font
-# label_font
-# title_font x
-# tick_font x
-# legend_font
-#
-# subtitle_font
 def plot_correlation_scatter(df, target = None, columns = None, labels = {},
     width = None, height = None, title = None, precision = 4,
     template = None, colors = 0, marker = {},
@@ -64,8 +59,7 @@ def plot_correlation_scatter(df, target = None, columns = None, labels = {},
     #
     colors = get_colors(colors)
     columns = get_numerical_columns(df, columns, target)
-    if isinstance(labels, list):
-        labels = get_labels(labels)
+    labels = get_labels(columns, labels)
     rows = [columns[c] for c in range(len(columns))]
     cols = [columns[c] for c in range(len(columns))]
     correlations = df[columns].corr()
