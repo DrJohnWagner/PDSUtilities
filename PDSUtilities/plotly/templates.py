@@ -21,7 +21,7 @@ pio.templates["DrJohnWagner"] = go.layout.Template(
     layout_font_size=16,
 )
 
-pio.templates.default = "simple_white+DrJohnWagner"
+pio.templates.default = "DrJohnWagner"
 
 pio.templates["draft"] = go.layout.Template(
     layout_annotations=[
