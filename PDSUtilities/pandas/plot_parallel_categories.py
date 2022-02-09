@@ -4,31 +4,53 @@ import numpy as np
 import pandas as pd
 import plotly.io as pio
 import plotly.graph_objects as go
-from PDSUtilities.pandas import get_categorical_columns
 from PDSUtilities.plotly import get_colors
 from PDSUtilities.plotly import apply_default
 from PDSUtilities.plotly import get_font
 from PDSUtilities.plotly import update_title
 from PDSUtilities.plotly import update_width_and_height
 
+
+def get_categorical_columns(df, columns=None, remove=None):
+    if columns is None:
+        columns = [column for column in df.columns if df[column].dtypes == "O"]
+    if not isinstance(columns, list):
+        columns = [column for column in columns]
+    if remove is not None and remove in columns:
+        columns.remove(remove)
+    return columns
+
+
 def get_line(df, target, colors):
     line = dict(
-        color = colors[0],
-        showscale = False,
+        color=colors[0],
+        showscale=False,
     )
     if target is not None:
         values = df[target]
-        if df[target].dtypes == 'O':
-            values = df[target].astype('category').cat.codes
-        line['color'] = values
-        line['colorscale'] = [
+        if df[target].dtypes == "O":
+            values = df[target].astype("category").cat.codes
+        line["color"] = values
+        line["colorscale"] = [
             colors[index % len(colors)] for index in range(len(np.unique(values)))
         ]
     return line
 
-def plot_parallel_categories(df, target = None, columns = None, labels = {},
-    width = None, height = None, title = None, colors = 0,
-    font = {}, tick_font = {}, axis_font = {}, title_font = {}):
+
+def plot_parallel_categories(
+    df,
+    target=None,
+    columns=None,
+    labels={},
+    width=None,
+    height=None,
+    title=None,
+    colors=0,
+    font={},
+    tick_font={},
+    axis_font={},
+    title_font={},
+):
     font = apply_default(get_font(), font)
     #
     colors = get_colors(colors)
@@ -40,21 +62,26 @@ def plot_parallel_categories(df, target = None, columns = None, labels = {},
         if target in columns:
             columns.remove(target)
         columns = [target] + columns
-    fig = go.Figure(go.Parcats(
-        dimensions = list([
-            dict(
-                values = df[column],
-                label = labels.get(column, column),
-                categoryorder = "category ascending",
-            ) for column in columns
-        ]),
-        line = get_line(df, target, colors),
-        labelfont = apply_default(font, axis_font),
-        tickfont = apply_default(font, tick_font),
-    ))
+    fig = go.Figure(
+        go.Parcats(
+            dimensions=list(
+                [
+                    dict(
+                        values=df[column],
+                        label=labels.get(column, column),
+                        categoryorder="category ascending",
+                    )
+                    for column in columns
+                ]
+            ),
+            line=get_line(df, target, colors),
+            labelfont=apply_default(font, axis_font),
+            tickfont=apply_default(font, tick_font),
+        )
+    )
     fig = update_width_and_height(fig, width, height)
     fig = update_title(fig, title, title_font, font)
     # if template is not None:
     #     fig.update_layout(template = template)
-    fig.update_layout(font = font)
+    fig.update_layout(font=font)
     return fig
