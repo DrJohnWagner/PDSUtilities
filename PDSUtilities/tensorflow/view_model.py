@@ -30,11 +30,6 @@ def cast_image(image):
     image = 2.0*image/255.0 - 1.0
     return image
 
-def create_figure(image, layer, filter, rows, cols, template):
-    filters = get_filters(image, layer, filter)
-    filters = [scale_image(filter) for filter in filters]
-    return create_image_subplots(filters, rows, cols, template = template)
-
 def view_model(model, rows, cols, template):
     if isinstance(model, str):
         model = load_model(model)
@@ -115,6 +110,10 @@ def view_model(model, rows, cols, template):
         "Filters", get_options(layers.value), on_filter
     )
     #
+    def create_figure(image, layer, filter, rows, cols, template):
+        filters = get_filters(image, layer, filter)
+        filters = [scale_image(filter) for filter in filters]
+        return create_image_subplots(filters, rows, cols, template = template)
     fig = go.FigureWidget(
         create_figure(
             images.options[images.value][0],
