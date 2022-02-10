@@ -97,7 +97,10 @@ def view_model(model, filenames, rows, cols, template):
         on_figure(image, change['new'], 0)
     prev_layer, layers, next_layer = prev_dropdown_next(
         "Layers",
-        [(layer.name, l) for l, layer in enumerate(model.layers)],
+        [
+            (f"{layer.name} ({layer.output.shape})", l)
+            for l, layer in enumerate(model.layers)
+        ],
         on_layer
     )
     #
