@@ -30,7 +30,7 @@ def cast_image(image):
     image = 2.0*image/255.0 - 1.0
     return image
 
-def view_model(model, rows, cols, template):
+def view_model(model, filenames, rows, cols, template):
     if isinstance(model, str):
         model = load_model(model)
     if template is None:
@@ -48,7 +48,7 @@ def view_model(model, rows, cols, template):
         ]
     # For now just get first four...
     def get_filters(image, layer, filter):
-        image = os.path.join("./training/x", image)
+        #image = os.path.join("./training/x", image)
         image = cast_image(load_image(image, True))
         layer = model.layers[layer]
         filters = tf.keras.Model(
@@ -86,9 +86,7 @@ def view_model(model, rows, cols, template):
         on_figure(image, layer, filter)
     prev_image, images, next_image = prev_dropdown_next(
         "Images", [
-            (filename, f)
-            for f, filename in enumerate(os.listdir("./training/x"))
-            if filename.endswith(".jpg")
+            (filename, f) for f, filename in enumerate(filenames)
         ], on_image
     )
     #
