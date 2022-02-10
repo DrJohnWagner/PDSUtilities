@@ -18,17 +18,20 @@ setup(
     license="Apache-2.0",
     packages=[
         "PDSUtilities",
-        "PDSUtilities.xgboost",
+        "PDSUtilities.ipywidgets",
         "PDSUtilities.pandas",
         "PDSUtilities.plotly",
-        "PDSUtilities.ipywidgets",
+        "PDSUtilities.tensorflow",
+        "PDSUtilities.xgboost",
     ],
     install_requires=[
         "igraph",
         "ipywidgets",
+        "nbformat",
         "numpy",
         "pandas",
         "plotly",
+        "tensorflow",
         "xgboost",
     ],
     tests_require=[
