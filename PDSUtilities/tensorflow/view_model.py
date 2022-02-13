@@ -98,7 +98,7 @@ def view_model(model, filenames, rows, cols, template):
     prev_layer, layers, next_layer = prev_dropdown_next(
         "Layers",
         [
-            (f"{layer.name} ({layer.output.shape})", l)
+            (f"{layer.name} {layer.output.shape}", l)
             for l, layer in enumerate(model.layers)
         ],
         on_layer
