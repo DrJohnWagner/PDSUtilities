@@ -15,4 +15,5 @@ from PDSUtilities.plotly.utilities import update_title
 from PDSUtilities.plotly.utilities import remove_ticks_and_tick_labels
 from PDSUtilities.plotly.utilities import get_rows_and_cols
 from PDSUtilities.plotly.create_image_subplots import create_image_subplots
+from PDSUtilities.plotly.get_specs_from_mosaic import get_specs_from_mosaic
 import PDSUtilities.plotly.templates as templates
