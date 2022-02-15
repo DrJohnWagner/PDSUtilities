@@ -44,7 +44,7 @@ def create_image_subplots(
             fig.update_yaxes(
                 row=row + 1,
                 col=col + 1,
-                range=[0, max_y - 1],
+                range=[max_y - 1, 0],
                 showgrid=False,
                 ticks="",
                 tickfont_size=1,
